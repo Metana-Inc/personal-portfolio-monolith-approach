@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import BASE_URL from "../config";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);
@@ -12,7 +11,7 @@ const Blogs = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await axios.get(BASE_URL + "api/blogs");
+      const response = await axios.get("/api/blogs");
       setBlogs(response.data.blogs);
     } catch (error) {
       console.error("Error fetching blogs:", error);
