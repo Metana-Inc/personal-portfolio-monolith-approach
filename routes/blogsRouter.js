@@ -6,19 +6,6 @@ import BlogData from "../data/BlogData.js";
 const blogsRouter = express.Router();
 blogsRouter.use(express.json());
 
-// // Seed blogs
-// blogsRouter.get(
-//   "/seed",
-//   expressAsyncHandler(async (req, res) => {
-//     try {
-//       const createBlogs = await blogModel.insertMany(BlogData.blogs);
-//       res.send({ createBlogs });
-//     } catch (error) {
-//       res.status(500).json({ message: "Internal server error" });
-//     }
-//   })
-// );
-
 // Get all blogs
 blogsRouter.get(
   "/",
@@ -64,7 +51,6 @@ blogsRouter.get(
 //   })
 // );
 
-
 // Create a blog
 blogsRouter.post(
   "/",
@@ -86,7 +72,6 @@ blogsRouter.post(
     }
   })
 );
-
 
 // Update a blog
 blogsRouter.put(

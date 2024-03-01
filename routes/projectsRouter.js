@@ -5,20 +5,6 @@ import Projects from "../models/projectModel.js";
 const projectsRouter = express.Router();
 projectsRouter.use(express.json());
 
-
-// //Seed projects
-// projectsRouter.get(
-//   "/seed",
-//   expressAsyncHandler(async (req, res) => {
-//     try {
-//       const createProjects = await Projects.insertMany(ProjectsData.projects);
-//       res.send({ createProjects });
-//     } catch (error) {
-//       res.status(500).json({ message: "Internal server error" });
-//     }
-//   })
-// );
-
 // Get all projects
 projectsRouter.get(
   "/",
@@ -83,7 +69,7 @@ projectsRouter.put(
 
     if (project) {
       project.name = req.body.name || project.name;
-      project.Image = req.body.imageUrl || project.Image; 
+      project.Image = req.body.imageUrl || project.Image;
       project.projectLink = req.body.projectLink || project.projectLink;
       project.description = req.body.description || project.description;
       const updatedProject = await project.save();

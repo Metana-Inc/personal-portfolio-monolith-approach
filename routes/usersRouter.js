@@ -87,7 +87,4 @@ usersRouter.get(
   })
 );
 
-//can have an admin middleware too
-//protected routes too
-
 export default usersRouter;
