@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const BlogPost = () => {
   const { id } = useParams();
@@ -12,10 +12,10 @@ const BlogPost = () => {
 
   const fetchBlog = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/blogs/${id}`);
+      const response = await axios.get(`/api/blogs/${id}`);
       setBlog(response.data);
     } catch (error) {
-      console.error('Error fetching blog:', error);
+      console.error("Error fetching blog:", error);
     }
   };
 
