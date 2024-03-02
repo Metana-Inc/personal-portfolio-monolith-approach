@@ -21,7 +21,6 @@ const Blogs = () => {
   return (
     <div className="container" id="blogs">
       <div className="article">
-        <h2 className="mb-5"></h2>
         <div className="row">
           {blogs.map((blog) => (
             <div key={blog._id} className="col-lg-4 col-md-6 mb-4">
