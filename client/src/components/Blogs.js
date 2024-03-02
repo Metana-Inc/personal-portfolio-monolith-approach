@@ -13,6 +13,10 @@ const Blogs = () => {
     try {
       const response = await axios.get("/api/blogs");
       setBlogs(response.data.blogs);
+      console.log(
+        "=== debug: blogs response data: ",
+        JSON.stringify(response.data)
+      );
     } catch (error) {
       console.error("Error fetching blogs:", error);
     }
