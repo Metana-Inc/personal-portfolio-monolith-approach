@@ -22,8 +22,8 @@ const Blogs = () => {
     <div className="container" id="blogs">
       <div className="article">
         <div className="row">
-          {blogs.map((blog) => (
-            <div key={blog._id} className="col-lg-4 col-md-6 mb-4">
+          {blogs.map((blog, index) => (
+            <div key={`blog-${index}`} className="col-lg-4 col-md-6 mb-4">
               <div className="card h-100">
                 <div className="card-body">
                   {/* Replace the image tag with your blog image */}
@@ -33,7 +33,7 @@ const Blogs = () => {
                   <div className="d-flex flex-wrap">
                     {blog.tags.map((tag, index) => (
                       <span
-                        key={index}
+                        key={`tag-${index}`}
                         className="badge bg-secondary me-1 mb-1"
                       >
                         {tag}
