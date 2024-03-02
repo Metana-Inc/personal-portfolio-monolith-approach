@@ -1,7 +1,6 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import blogModel from "../models/blogModel.js";
-import BlogData from "../data/BlogData.js";
 
 const blogsRouter = express.Router();
 blogsRouter.use(express.json());
@@ -35,21 +34,6 @@ blogsRouter.get(
     }
   })
 );
-
-// // Create a blog testing
-// blogsRouter.post(
-//   "/",
-//   expressAsyncHandler(async (req, res) => {
-//     const blog = new blogModel({
-//       title: "Sample Blog",
-//       content: "Sample content",
-//       images: ["/images/sample.jpg"],
-//       tags: ["tag1", "tag2"],
-//     });
-//     const createdBlog = await blog.save();
-//     res.status(201).send({ message: "Blog Created", blog: createdBlog });
-//   })
-// );
 
 // Create a blog
 blogsRouter.post(
