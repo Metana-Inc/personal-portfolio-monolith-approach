@@ -1,73 +1,80 @@
-// Seeds example blogs on our MongoDB connection
+// Seeds example blogs on our mongoDB connection
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import Blog from "../models/blogModel.js";
 import BlogData from "../data/BlogData.js";
+import fs from "fs";
+const ENV_FILE = ".env";
+
+// Load environment settings
+function loadEnv() {
+  if (!fs.existsSync(ENV_FILE)) {
+    throw `env file not found: ${ENV_FILE}`;
+  }
+  dotenv.config({ path: ENV_FILE });
+}
 
 // Connects to the Mongo database
 async function connectDb() {
-  dotenv.config({ path: "./config/.env" });
-  const dbURI = process.env.MONGO_URI;
+  const dbURI = process.env.MONGODB_URI;
   const dbName = process.env.DB_NAME;
+
+  if (!dbURI || !dbName) {
+    throw `db URI or dbName is empty`;
+  }
 
   try {
     await mongoose.connect(dbURI, { dbName });
-    console.log(`MongoDB connected: ${dbName}`);
+    console.log(`[+] mongoDB connected: ${dbName}`);
   } catch (err) {
-    throw "MongoDB connection error: " + err;
+    throw "mongoDB connection error: " + err;
   }
 }
 
 // Close the database connection
 const closeDBConn = () => {
   mongoose.connection.close();
-  console.log("MongoDB connection closed");
+  console.log("[+] mongoDB connection closed");
 };
 
 // Clean up seeded data
-// FIXME --  we should probably have a check against IDs
-// to make sure we don't accidentally delete production data.
 const cleanupSeedPosts = async () => {
-  // Connect to the Mongo db
-  await connectDb();
+  console.log("[+] cleaning up seed posts data...");
 
   try {
-    console.log("[+] cleaning up seed posts data...");
-    // Clean up the blog collection
-    // Leaving this commented out -- we should probably have a check against IDs to make sure
-    // we don't accidentally delete production data.
-    // await Blog.deleteMany({});
-    console.log("[debug] not yet implemented: cleanup seed posts");
+    // FIXME --  we should probably have a check against IDs
+    // to make sure we don't accidentally delete production data.
+    await Blog.deleteMany({});
+    console.log("[+] clean up seed posts -- ok");
   } catch (err) {
     throw "cleanup seed posts failed: " + err;
-  } finally {
-    closeDBConn();
   }
 };
 
 // Function to seed blog posts
 const seedBlogPosts = async () => {
   console.log("[+] creating seed posts...");
-
-  // Connect to the Mongo db
-  await connectDb();
-
   try {
-    // Clean up the blog collection
-    await cleanupSeedPosts();
-
-    // const deleteBlogs = await Blog.deleteMany({});
-    // console.log("Blog collection cleaned up");
-
     // Insert new blog posts
-    const createdBlogs = await Blog.insertMany(blogPosts);
+    const createdBlogs = await Blog.insertMany(BlogData.blogs);
     console.log("[+] blog posts seeded:", createdBlogs);
   } catch (err) {
-    console.error("[error] seed failed:", err);
-  } finally {
-    closeDBConn();
+    throw `seed blog posts failed: ${err}`;
   }
 };
 
-// Execute the function
-seedBlogPosts();
+// Start DB connection, Clean up old posts, seed posts, and exit.
+async function run() {
+  try {
+    loadEnv();
+    await connectDb();
+    await cleanupSeedPosts();
+    await seedBlogPosts();
+  } catch (err) {
+    console.error("[error] db seeding failed: ", err);
+  } finally {
+    closeDBConn();
+  }
+}
+
+run();
