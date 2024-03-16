@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import BASE_URL from "../config";
 
 const AdminDashboard = () => {
   const [blogs, setBlogs] = useState([]);
@@ -16,7 +15,7 @@ const AdminDashboard = () => {
 
   const fetchBlogs = async () => {
     try {
-      const response = await axios.get(BASE_URL + "api/blogs");
+      const response = await axios.get("/api/blogs");
       setBlogs(response.data.blogs);
     } catch (error) {
       console.error("Error fetching blogs:", error);
@@ -25,7 +24,7 @@ const AdminDashboard = () => {
 
   const handleCreateBlog = async () => {
     try {
-      await axios.post(BASE_URL + "api/blogs", {
+      await axios.post("/api/blogs", {
         title,
         content,
         images,
@@ -39,7 +38,7 @@ const AdminDashboard = () => {
 
   const handleDeleteBlog = async (id) => {
     try {
-      await axios.delete(BASE_URL + `api/blogs/${id}`);
+      await axios.delete(`/api/blogs/${id}`);
       fetchBlogs();
     } catch (error) {
       console.error("Error deleting blog:", error);
@@ -55,10 +54,7 @@ const AdminDashboard = () => {
         tags: tags.split(",").map((tag) => tag.trim()), // Split tags by comma and trim whitespace
       };
 
-      const response = await axios.put(
-        BASE_URL + `api/blogs/${id}`,
-        updatedBlog
-      );
+      const response = await axios.put(`/api/blogs/${id}`, updatedBlog);
 
       if (response.data.message === "Blog Updated") {
         fetchBlogs();
