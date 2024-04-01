@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import AdminDashboard from "./components/AdminDashboard";
 import BlogPost from "./components/BlogPost";
 import Projects from "./components/Projects";
+import Login from "./components/Login";
 import Testimonials from "./components/Testimonials";
 
 
@@ -23,6 +24,7 @@ export default function App() {
         <Header />
         <NavBar />
         <Routes style={{ flex: 1 }}>
+          <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
