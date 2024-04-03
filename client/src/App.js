@@ -14,7 +14,7 @@ import Login from "./components/Login";
 import Testimonials from "./components/Testimonials";
 import Register from "./components/Register";
 import AdminBlog from "./components/AdminBlog";
-
+import AdminProjects from "./components/AdminProject";
 
 export default function App() {
   return (
@@ -32,10 +32,12 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blogs/:id" element={<BlogPost />} />
-          <Route path="/admin" element={<AdminDashboard />} />
-          <Route path="/admin/blogs" element={<AdminBlog />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/testimonials" element={<Testimonials />} />
+
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/blogs" element={<AdminBlog />} />
+          <Route path="/admin/projects" element={<AdminProjects />} />
         </Routes>
         <Footer />
       </BrowserRouter>
