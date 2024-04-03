@@ -4,13 +4,16 @@ import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   const navigate = useNavigate();
-  const isLoggedIn = localStorage.getItem("userInfo");
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const isLoggedIn = userInfo && userInfo.role;
 
   const handleLogout = () => {
     localStorage.removeItem("userInfo");
     navigate("/login");
   };
+
   const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
       <div className="container">
@@ -113,20 +116,25 @@ const NavBar = () => {
                 Contact Me
               </NavLink>
             </li>
+
             {isLoggedIn ? (
-              <li>
-                <div
-                  className="btn btn-primary"
-                  style={{
-                    backgroundColor: "#ff6300",
-                    borderColor: "#ff6300",
-                    marginTop: "5px",
-                    marginLeft: "10px",
-                  }}
-                >
-                  <button onClick={handleLogout}>Logout</button>
-                </div>
-              </li>
+              userInfo.role === "admin" ? (
+                <li className="nav-item">
+                  <NavLink
+                    to="/admin"
+                    className="btn btn-primary"
+                    activeClassName="active"
+                    style={{
+                      backgroundColor: "#ff6300",
+                      borderColor: "#ff6300",
+                      marginTop: "5px",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    Dashboard
+                  </NavLink>
+                </li>
+              ) : null
             ) : (
               <>
                 <li className="nav-item">
@@ -161,6 +169,21 @@ const NavBar = () => {
                 </li>
               </>
             )}
+            <li className="nav-item">
+              {isLoggedIn ? (
+                <div
+                  className="btn btn-primary"
+                  style={{
+                    backgroundColor: "#ff6300",
+                    borderColor: "#ff6300",
+                    marginTop: "5px",
+                    marginLeft: "10px",
+                  }}
+                >
+                  <button onClick={handleLogout}>Logout</button>
+                </div>
+              ) : null}
+            </li>
           </ul>
         </div>
       </div>
