@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("userInfo");
+    navigate("/login");
+  };
   const [menuOpen, setMenuOpen] = useState(false);
   return (
     <nav className="navbar navbar-expand-lg navbar-light">
@@ -104,6 +111,11 @@ const NavBar = () => {
               >
                 Contact Me
               </NavLink>
+            </li>
+            <li>
+              <div className="nav">
+                <button onClick={handleLogout}>Logout</button>
+              </div>
             </li>
           </ul>
         </div>
