@@ -12,6 +12,7 @@ import BlogPost from "./components/BlogPost";
 import Projects from "./components/Projects";
 import Login from "./components/Login";
 import Testimonials from "./components/Testimonials";
+import Register from "./components/Register";
 
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
         <Routes style={{ flex: 1 }}>
           <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/services" element={<Services />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
