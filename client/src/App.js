@@ -15,6 +15,7 @@ import Testimonials from "./components/Testimonials";
 import Register from "./components/Register";
 import AdminBlog from "./components/AdminBlog";
 import AdminProjects from "./components/AdminProject";
+import AdminUser from "./components/AdminUser";
 
 export default function App() {
   return (
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/blogs" element={<AdminBlog />} />
           <Route path="/admin/projects" element={<AdminProjects />} />
+          <Route path="/admin/users" element={<AdminUser />} />
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -87,4 +87,55 @@ usersRouter.get(
   })
 );
 
+// Create User
+usersRouter.post(
+  "/",
+  expressAsyncHandler(async (req, res) => {
+    const { name, email, password, role } = req.body;
+    const userExists = await userModel.findOne({ email: email });
+    if (userExists) {
+      res.status(400).send({ message: "User already exists" });
+      return;
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new userModel({ name, email, password: hashedPassword, role });
+    const createdUser = await user.save();
+    res.status(201).send({ message: "User created", user: createdUser });
+  })
+);
+
+// Delete User
+usersRouter.delete(
+  "/:id",
+  expressAsyncHandler(async (req, res) => {
+    const userId = req.params.id;
+    const user = await userModel.findById(userId);
+    if (user) {
+      await user.remove();
+      res.send({ message: "User deleted successfully" });
+    } else {
+      res.status(404).send({ message: "User not found" });
+    }
+  })
+);
+
+// Edit User
+usersRouter.put(
+  "/:id",
+  expressAsyncHandler(async (req, res) => {
+    const userId = req.params.id;
+    const { name, email, role } = req.body;
+    const user = await userModel.findById(userId);
+    if (user) {
+      user.name = name || user.name;
+      user.email = email || user.email;
+      user.role = role || user.role;
+      const updatedUser = await user.save();
+      res.send({ message: "User updated successfully", user: updatedUser });
+    } else {
+      res.status(404).send({ message: "User not found" });
+    }
+  })
+);
+
 export default usersRouter;

@@ -10,6 +10,9 @@ const AdminDashboard = () => {
       <Link to="/admin/projects" className="btn btn-primary">
         Manage Projects
       </Link>
+      <Link to="/admin/users" className="btn btn-primary">
+        Manage Users
+      </Link>
 
     </div>
   );
