@@ -13,6 +13,7 @@ import Projects from "./components/Projects";
 import Login from "./components/Login";
 import Testimonials from "./components/Testimonials";
 import Register from "./components/Register";
+import AdminBlog from "./components/AdminBlog";
 
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blogs/:id" element={<BlogPost />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/blogs" element={<AdminBlog />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/testimonials" element={<Testimonials />} />
         </Routes>
