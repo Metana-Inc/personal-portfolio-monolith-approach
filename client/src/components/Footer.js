@@ -122,7 +122,7 @@ const Footer = () => {
           color: "white", // Change color to orange
         }}
       >
-        <div className="container">
+        <div className="container pb-2">
           <div className="row">
             <div className="col">
               {/* Copyright */}
