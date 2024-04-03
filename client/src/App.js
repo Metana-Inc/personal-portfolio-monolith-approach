@@ -1,6 +1,5 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Header from "./components/Header";
 import NavBar from "./components/NavBar";
 import Home from "./components/Home";
 import Services from "./components/Services";
@@ -21,7 +20,6 @@ export default function App() {
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
       <BrowserRouter>
-        <Header />
         <NavBar />
         <Routes style={{ flex: 1 }}>
           <Route path="/login" element={<Login />} />

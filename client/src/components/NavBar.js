@@ -113,7 +113,15 @@ const NavBar = () => {
               </NavLink>
             </li>
             <li>
-              <div className="nav">
+              <div
+                className="btn btn-primary"
+                style={{
+                  backgroundColor: "#ff6300",
+                  borderColor: "#ff6300",
+                  marginTop: "5px",
+                  marginLeft: "10px",
+                }}
+              >
                 <button onClick={handleLogout}>Logout</button>
               </div>
             </li>
