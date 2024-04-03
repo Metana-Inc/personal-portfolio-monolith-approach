@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
   const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem("userInfo");
 
   const handleLogout = () => {
     localStorage.removeItem("userInfo");
@@ -112,19 +113,54 @@ const NavBar = () => {
                 Contact Me
               </NavLink>
             </li>
-            <li>
-              <div
-                className="btn btn-primary"
-                style={{
-                  backgroundColor: "#ff6300",
-                  borderColor: "#ff6300",
-                  marginTop: "5px",
-                  marginLeft: "10px",
-                }}
-              >
-                <button onClick={handleLogout}>Logout</button>
-              </div>
-            </li>
+            {isLoggedIn ? (
+              <li>
+                <div
+                  className="btn btn-primary"
+                  style={{
+                    backgroundColor: "#ff6300",
+                    borderColor: "#ff6300",
+                    marginTop: "5px",
+                    marginLeft: "10px",
+                  }}
+                >
+                  <button onClick={handleLogout}>Logout</button>
+                </div>
+              </li>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <NavLink
+                    to="/login"
+                    className="btn btn-primary"
+                    style={{
+                      backgroundColor: "#ff6300",
+                      borderColor: "#ff6300",
+                      marginTop: "5px",
+                      marginLeft: "10px",
+                    }}
+                    activeClassName="active"
+                  >
+                    Login
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink
+                    to="/register"
+                    className="btn btn-primary"
+                    style={{
+                      backgroundColor: "#ff6300",
+                      borderColor: "#ff6300",
+                      marginTop: "5px",
+                      marginLeft: "10px",
+                    }}
+                    activeClassName="active"
+                  >
+                    Register
+                  </NavLink>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
