@@ -15,7 +15,7 @@ const Login = () => {
         email,
         password,
       });
-      localStorage.setItem("userInfo", JSON.stringify(response.data));
+      localStorage.setItem("userInfo", JSON.stringify(response.data.role));
       if (response.data.role === "admin") {
         navigate("/admin");
         return;

@@ -4,6 +4,7 @@ import userModel from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import adminMiddleware from "../middlewares/isAdminMiddleware.js";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ usersRouter.post(
     const userExists = await userModel.findOne({ email: email }).exec();
     if (userExists) {
       res.status(400).send({ message: "User already exists" });
+      return;
     }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -27,14 +29,25 @@ usersRouter.post(
       password: hashedPassword,
     });
     const createdUser = await user.save();
+
+    // Generate JWT token
+    const token = jwt.sign({ _id: createdUser._id }, process.env.JWT_SECRET, {
+      expiresIn: "30d",
+    });
+
+    // Set the token as an HttpOnly cookie
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      secure: true, // Set to true in production for HTTPS
+      sameSite: 'strict' // or 'lax' depending on your requirements
+    });
+
+    // Respond with user information
     res.send({
       _id: createdUser._id,
       name: createdUser.name,
       email: createdUser.email,
       role: createdUser.role,
-      token: jwt.sign({ _id: createdUser._id }, process.env.JWT_SECRET, {
-        expiresIn: "30d",
-      }),
     });
   })
 );
@@ -48,28 +61,24 @@ usersRouter.post(
     if (user) {
       const validPassword = await bcrypt.compare(password, user.password);
       if (validPassword) {
+        // Generate JWT token
         const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
           expiresIn: "30d",
         });
-        if (user.role === "admin") {
-          // Redirect to admin dashboard
-          res.send({
-            message: "Admin Login",
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            token: token,
-          });
-          return;
-        }
 
+        // Set the token as an HttpOnly cookie
+        res.cookie('jwt', token, {
+          httpOnly: true,
+          secure: true, // Set to true in production for HTTPS
+          sameSite: 'strict' // or 'lax' depending on your requirements
+        });
+
+        // Respond with user information
         res.send({
           _id: user._id,
           name: user.name,
           email: user.email,
           role: user.role,
-          token: token,
         });
         return;
       }
@@ -78,18 +87,34 @@ usersRouter.post(
   })
 );
 
-// Get all users
+// Logout
+usersRouter.get(
+  "/logout",
+  (req, res) => {
+    // Clear the jwt cookie
+    res.clearCookie('jwt', { path: '/login' });
+    
+  
+    // Respond with a success message
+    res.send({ message: "Logged out successfully" });
+  }
+);
+
+
+// Get all users (protected route)
 usersRouter.get(
   "/",
+  adminMiddleware, // Apply the admin middleware here
   expressAsyncHandler(async (req, res) => {
     const users = await userModel.find({}).exec();
     res.send(users);
   })
 );
 
-// Create User
+// Create User (protected route)
 usersRouter.post(
   "/",
+  adminMiddleware, // Apply the admin middleware here
   expressAsyncHandler(async (req, res) => {
     const { name, email, password, role } = req.body;
     const userExists = await userModel.findOne({ email: email });
@@ -104,9 +129,10 @@ usersRouter.post(
   })
 );
 
-// Delete User
+// Delete User (protected route)
 usersRouter.delete(
   "/:id",
+  adminMiddleware, // Apply the admin middleware here
   expressAsyncHandler(async (req, res) => {
     const userId = req.params.id;
     const user = await userModel.findById(userId);
@@ -119,9 +145,10 @@ usersRouter.delete(
   })
 );
 
-// Edit User
+// Edit User (protected route)
 usersRouter.put(
   "/:id",
+  adminMiddleware, // Apply the admin middleware here
   expressAsyncHandler(async (req, res) => {
     const userId = req.params.id;
     const { name, email, role } = req.body;
@@ -137,5 +164,6 @@ usersRouter.put(
     }
   })
 );
+
 
 export default usersRouter;

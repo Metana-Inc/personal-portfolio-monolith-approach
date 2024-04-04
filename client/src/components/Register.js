@@ -17,7 +17,7 @@ const Register = () => {
         email,
         password,
       });
-      localStorage.setItem("userInfo", JSON.stringify(response.data));
+      localStorage.setItem("userInfo", JSON.stringify(response.data.role));
       navigate("/");
     } catch (error) {
       setError("Error signing up. Please try again.");

@@ -5,12 +5,35 @@ import { useNavigate } from "react-router-dom";
 const NavBar = () => {
   const navigate = useNavigate();
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const isLoggedIn = userInfo && userInfo.role;
+  const isLoggedIn = userInfo && userInfo;
 
-  const handleLogout = () => {
-    localStorage.removeItem("userInfo");
-    navigate("/login");
+  const handleLogout = async () => {
+    try {
+      // Make a GET request to the logout endpoint
+      const response = await fetch("/api/users/logout", {
+        method: "GET",
+        credentials: "include", // Include credentials (cookies) in the request
+      });
+  
+      if (response.ok) {
+        // Clear user info from local storage
+        localStorage.removeItem("userInfo");
+        
+        // Clear token and user role from session storage
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("userRole");
+  
+        // Navigate to the login page
+        navigate("/login");
+      } else {
+        // If logout was unsuccessful, show an error message
+        console.error("Logout failed");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   };
+  
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -118,7 +141,7 @@ const NavBar = () => {
             </li>
 
             {isLoggedIn ? (
-              userInfo.role === "admin" ? (
+              userInfo === "admin" ? (
                 <li className="nav-item">
                   <NavLink
                     to="/admin"
