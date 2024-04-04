@@ -4,7 +4,6 @@ import userModel from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import adminMiddleware from "../middlewares/isAdminMiddleware.js";
 
 dotenv.config();
 
@@ -104,7 +103,7 @@ usersRouter.get(
 // Get all users (protected route)
 usersRouter.get(
   "/",
-  adminMiddleware, // Apply the admin middleware here
+ 
   expressAsyncHandler(async (req, res) => {
     const users = await userModel.find({}).exec();
     res.send(users);
@@ -114,7 +113,7 @@ usersRouter.get(
 // Create User (protected route)
 usersRouter.post(
   "/",
-  adminMiddleware, // Apply the admin middleware here
+
   expressAsyncHandler(async (req, res) => {
     const { name, email, password, role } = req.body;
     const userExists = await userModel.findOne({ email: email });
@@ -132,7 +131,7 @@ usersRouter.post(
 // Delete User (protected route)
 usersRouter.delete(
   "/:id",
-  adminMiddleware, // Apply the admin middleware here
+
   expressAsyncHandler(async (req, res) => {
     const userId = req.params.id;
     const user = await userModel.findById(userId);
@@ -148,7 +147,7 @@ usersRouter.delete(
 // Edit User (protected route)
 usersRouter.put(
   "/:id",
-  adminMiddleware, // Apply the admin middleware here
+ 
   expressAsyncHandler(async (req, res) => {
     const userId = req.params.id;
     const { name, email, role } = req.body;
