@@ -9,6 +9,7 @@
     "frontend": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run frontend\"",
     "test": "jest",
+    "test:coverage": "npx jest --coverage",
     "seed": "node script/seedDb.js"
   },
   "author": "",
